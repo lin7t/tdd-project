@@ -5,7 +5,7 @@ const Portfolio = require("./protfolio");
 class MoneyTest {
     testMultiplication() {
         let tenEuro = new Money(10, "EUR");
-        let twentyEuro = new Money(200, "EUR");
+        let twentyEuro = new Money(20, "EUR");
         assert.deepStrictEqual(tenEuro.times(2), twentyEuro);
     }
 
@@ -22,6 +22,15 @@ class MoneyTest {
         let protfolio = new Portfolio();
         protfolio.add(fiveDollars, tenDollars);
         assert.deepStrictEqual(protfolio.evaluate("USD"), fifteenDollars);
+    }
+
+    testAdditionOfDollarsAndEuros() {
+        let fiveDollars = new Money(5, "USD");
+        let tenEuros = new Money(10, "EUR");
+        let protfolio = new Portfolio();
+        protfolio.add(fiveDollars, tenEuros);
+        let expectedValue = new Money(17, "USD");
+        assert.deepStrictEqual(protfolio.evaluate("USD"), expectedValue);
     }
 
     getAllTestMethods() {
