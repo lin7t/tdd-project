@@ -5,20 +5,23 @@ class Portfolio {
         this.moneys = [];
     }
 
-    add(...moneys){
+    add(...moneys) {
         this.moneys.push(...moneys);
     }
 
-    evaluate(currency) {
+    evaluate(bank, currency) {
         let failures = [];
         let total = this.moneys.reduce((sum, money) => {
-            let convertedAmount = this.convert(money, currency);
-            if (convertedAmount === undefined) {
-                failures.push(money.currency + "->" + currency);
+            try {
+                let convertedMoney = bank.convert(money, currency);
+                return sum + convertedMoney.amount;
+            }
+            catch (error) {
+                failures.push(error.message);
                 return sum;
             }
-            return sum + convertedAmount;
         }, 0);
+        
         if (failures.length > 0) {
             throw new Error(`Missing exchange rate(s):[${failures.join(",")}]`);
         }
